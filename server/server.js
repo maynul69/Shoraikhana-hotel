@@ -13,24 +13,27 @@ const app = express();
 // Enable CORS
 app.use(cors());
 
-// ===== WEBHOOK ROUTE (raw body) =====
-// This must be before express.json() and any other middleware that parses the body
+// ===== WEBHOOK ROUTE FIRST =====
+// This must be BEFORE express.json() so we can get raw body for Svix verification
 app.post(
   "/api/clerk",
-  express.raw({ type: "application/json" }), // raw body for Svix verification
+  express.raw({ type: "application/json" }),
   clerkWebhooks
 );
 
-// ===== NORMAL MIDDLEWARE =====
-app.use(express.json()); // parse JSON for normal routes
-app.use(clerkMiddleware()); // Clerk auth middleware for protected routes
+// ===== REGULAR MIDDLEWARE =====
+app.use(express.json()); // parse JSON for all other routes
+app.use(clerkMiddleware()); // Clerk auth for protected routes
 
 // ===== ROUTES =====
 app.get("/", (req, res) => res.send("API is Working"));
 
 // ===== SERVER START =====
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server is running on port ${PORT}`)
+);
+
 
 
 
