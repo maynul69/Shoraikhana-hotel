@@ -5,8 +5,8 @@ const hotelSchema = mongoose.Schema({
     contact: { type: String, required: true },
     owner: { type: String, required: true, ref: 'User' },
     city: { type: String, required: true},
-    timestamps: true
-})
+    
+},{timestamps: true})
  
 const Hotel = mongoose.model("Hotel", hotelSchema);
 export default Hotel;
