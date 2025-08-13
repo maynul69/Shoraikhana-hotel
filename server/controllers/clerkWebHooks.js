@@ -62,14 +62,14 @@ export default async function clerkWebhooks(req, res) {
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
 
-      console.log(`👤 User created/updated: ${data.id}`);
+      console.log(`User created/updated: ${data.id}`);
     }
 
     if (event.type === "user.deleted") {
       const uid = event.data?.id || event.data?.user_id || event.id;
       if (uid) {
         await User.findByIdAndDelete(uid);
-        console.log(`🗑️ User deleted: ${uid}`);
+        console.log(`User deleted: ${uid}`);
       }
     }
 
