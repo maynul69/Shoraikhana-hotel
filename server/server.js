@@ -73,7 +73,7 @@ const app = express();
 app.use(cors()) //enable cross-origin resoure sharing
 // API to listen clerk webhooks
 
-app.use("/api/clerk", express.raw({ type: "application/json" }));
+app.use("/api/clerk", express.raw({ type: "application/json" }), clerkWebhooks) 
 
 // middleware 
 app.use(express.json()) // parse json data`
