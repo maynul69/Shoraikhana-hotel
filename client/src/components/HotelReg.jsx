@@ -1,20 +1,45 @@
+import { useState } from "react";
 import { assets, cities } from "../assets/assets";
 import { useAppContext } from "../context/Appcontext";
+import toast from "react-hot-toast";
 
 const HotelReg = () => {
-  const { setshowHotelReg } = useAppContext();
+  const { setshowHotelReg, axios, getToken, setIsOwner   } = useAppContext();
 
-  // Prevent closing modal when clicking inside the form
-  const handleFormClick = (e) => e.stopPropagation();
+
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [contact, setContact] = useState("");
+  const [city, setCity] = useState("");
+
+  const onSubmitHandler = async (event) => {
+    try {
+      event.preventDefault();
+      const { data } = await axios.post(`/api/hotels/`, { name, contact, address, city }, { headers: { Authorization: `Bearer ${await getToken()}` } })
+      if (data.success) {
+        toast.success(data.message);
+        setIsOwner(true);
+        setshowHotelReg(false);
+      }
+      else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+   }
 
   return (
     <div
+      onClick={() => setshowHotelReg(false)}
       className="fixed top-0 bottom-0 left-0 right-0 z-50 flex items-center justify-center bg-black/70"
-      onClick={() => setshowHotelReg(false)} // clicking outside closes modal
+      
     >
       <form
+        onSubmit={onSubmitHandler}
+        onClick={(e) => e.stopPropagation()}
         className="flex bg-white rounded-xl max-w-4xl max-md:mx-2"
-        onClick={handleFormClick} // prevent propagation
+
       >
         <img
           src={assets.regImage}
@@ -38,6 +63,8 @@ const HotelReg = () => {
             </label>
             <input
               id="name"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
               type="text"
               placeholder="Type Here"
               className="border border-gray-200 rounded w-full px-3 py-2.5 mt-1 outline-indigo-500 font-light"
@@ -51,6 +78,8 @@ const HotelReg = () => {
               Phone
             </label>
             <input
+              onChange={(e) => setContact(e.target.value)}
+              value={contact}
               id="contact"
               type="text"
               placeholder="Type Here"
@@ -65,6 +94,8 @@ const HotelReg = () => {
               Address
             </label>
             <input
+              onChange={(e) => setAddress(e.target.value)}
+              value={address}
               id="address"
               type="text"
               placeholder="Type Here"
@@ -79,6 +110,8 @@ const HotelReg = () => {
               City
             </label>
             <select
+              onChange={(e) => setCity(e.target.value)}
+              value={city}
               id="city"
               className="border border-gray-200 rounded w-full px-3 py-2.5 mt-1 outline-indigo-500 font-light"
               required
