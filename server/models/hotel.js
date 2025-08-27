@@ -8,5 +8,5 @@ const hotelSchema = mongoose.Schema({
     
 },{timestamps: true})
  
-const Hotel = mongoose.model("Hotel", hotelSchema);
+const Hotel = mongoose.models.Hotel || mongoose.model("Hotel", hotelSchema);
 export default Hotel;

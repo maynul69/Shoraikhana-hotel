@@ -1,25 +1,26 @@
-import React from 'react'
-import Navbar from './components/Navbar'
+import React from "react";
+import Navbar from "./components/Navbar";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Home from './pages/Home';
-import Footer from './components/Footer';
-import AllRooms from './pages/AllRooms';
-import RoomDetails from './pages/RoomDetails';
-import MyBookings from './pages/MyBookings';
-import HotelReg from './components/HotelReg';
-import Layout from './pages/hotelOwner/Layout';
-import Dashboard from './pages/hotelOwner/Dashboard';
-import AddRoom from './pages/hotelOwner/AddRoom';
-import ListRoom from './pages/hotelOwner/ListRoom';
-
+import Home from "./pages/Home";
+import Footer from "./components/Footer";
+import AllRooms from "./pages/AllRooms";
+import RoomDetails from "./pages/RoomDetails";
+import MyBookings from "./pages/MyBookings";
+import HotelReg from "./components/HotelReg";
+import Layout from "./pages/hotelOwner/Layout";
+import Dashboard from "./pages/hotelOwner/Dashboard";
+import AddRoom from "./pages/hotelOwner/AddRoom";
+import ListRoom from "./pages/hotelOwner/ListRoom";
+import { Toaster } from "react-hot-toast";
+import { useAppContext } from "./context/Appcontext";
 const App = () => {
-
-    const isOwnerPath = useLocation().pathname.includes("owner");
-
+  const isOwnerPath = useLocation().pathname.includes("owner");
+  const { showHotelReg } = useAppContext();
   return (
     <div>
+      <Toaster />
       {!isOwnerPath && <Navbar />}
-      {false && <HotelReg />}
+      {showHotelReg && <HotelReg />}
       <div className="min-h-[70vh]">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -28,14 +29,14 @@ const App = () => {
           <Route path="/rooms/:id" element={<RoomDetails />} />
           <Route path="/owner" element={<Layout />}>
             <Route index element={<Dashboard />} />
-            <Route path='add-room' element={<AddRoom />} />
-            <Route path='list-room' element={<ListRoom/>} />
+            <Route path="add-room" element={<AddRoom />} />
+            <Route path="list-room" element={<ListRoom />} />
           </Route>
         </Routes>
       </div>
       <Footer />
     </div>
   );
-}
+};
 
-export default App
+export default App;

@@ -1,6 +1,6 @@
-import Booking from "../models/Booking"
-import Hotel from "../models/hotel";
-import Room from "../models/room";
+import Booking from "../models/Booking.js"
+import Hotel from "../models/Hotel.js";
+import Room from "../models/room.js";
 
 
 // function to check if the room is available
