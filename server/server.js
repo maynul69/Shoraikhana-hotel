@@ -10,31 +10,32 @@ import roomRoutes from "./routes/roomRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 
-// Connect to DB (only once)
+// Connect to DB once
 connectDB();
 
 const app = express();
 app.use(cors());
 
-// Clerk webhook must use raw body for Svix verification
+// Clerk webhook
 app.post(
   "/api/clerk",
   express.raw({ type: "application/json" }),
   clerkWebhooks
 );
 
-// Normal middleware
+// Middlewares
 app.use(express.json());
 app.use(clerkMiddleware());
 
-// Mount API routers
+// API routes
 app.use("/api/hotels", hotelRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/booking", bookingRoutes);
 
-// Health check route
+// Health check
 app.get("/", (req, res) => res.send("API is Working 🚀"));
 
-// ❌ No app.listen() here — Vercel handles this
-export default app;
+// 🔹 Export as handler for Vercel
+const handler = (req, res) => app(req, res);
+export default handler;
