@@ -1,5 +1,5 @@
 
-import Hotel from "../models/hotel.js";
+import Hotel from "../models/Hotel.js";
 import User from "../models/user.js";
 
 export const registerHotel = async (req, res) => {
@@ -17,7 +17,7 @@ export const registerHotel = async (req, res) => {
         await Hotel.create({ name, address, contact, owner, city });
         
         await User.findByIdAndUpdate(
-            owner, { role: "hotelOwner" })
+            owner, { role: "owner" })
         res.json({ success: true, message: "Hotel registered successfully" });
     } catch (error) {
         res.json({ success: false, message: error.message});
